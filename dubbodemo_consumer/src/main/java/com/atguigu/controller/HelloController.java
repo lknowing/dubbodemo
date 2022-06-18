@@ -17,15 +17,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/demo")
 public class HelloController {
     //调用远程服务 RPC
-    @Reference(loadbalance = "roundrobin")
-    private HelloService helloService;
+    @Reference(loadbalance = "roundrobin")//使用dubbo框架提供的依赖注入注解，而不是Spring框架提供的@Autowired注解
+    private HelloService helloService;//生成JDK动态代理对象，实现RPC。封装Socker/ServerSocker编程。
 
     @RequestMapping("/hello")
     @ResponseBody
     public String getName(String name) {
         //远程调用
+        // HttpMessageConverter  消息转换器
+        // ==>> StringHttpMessageConverter ===>>  out.print()
+        // ==>> MappingJackson2HttpMessageConverter  ==>>   toJsonString()
         String result = helloService.sayHello(name);
         System.out.println("result = " + result);
-        return result;//@ResponseBody注解：直接返回字符串到页面上；如果是类对象，会变成JSON数据返回
+        return result;//@ResponseBody注解：直接返回字符串到页面上，无需视图解析；如果是类对象，会变成JSON数据返回
     }
 }

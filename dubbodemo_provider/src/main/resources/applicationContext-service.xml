@@ -30,5 +30,8 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <!--开启事务控制的注解支持-->
+    <!--
+        proxy-target-class="true" 事务代理方式采用cglib方式。
+    -->
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
 </beans>
